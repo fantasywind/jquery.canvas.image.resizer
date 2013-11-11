@@ -14,16 +14,19 @@
     onChange = (e)->
       files = @files
       if files.length
-        @image = new Image
-        @image.onload = =>
-          makeCanvas.call @
-        @image.src = URL.createObjectURL(files[0])
-    
+        for file in files
+          (->
+            image = new Image
+            image.onload = ->
+              makeCanvas.call image
+            image.src = URL.createObjectURL(file)
+          )()
+          
     # Canvas Creator
     makeCanvas = ->
       canvas = document.createElement('canvas')
-      h = @image.height
-      w = @image.width
+      h = @height
+      w = @width
       if w > _options.width or h > _options.height
         byWidth = w / _options.width
         byHeight = h / _options.height
@@ -45,10 +48,10 @@
       canvas.setAttribute('width', targetWidth)
       canvas.setAttribute('height', targetHeight)
       ctx = canvas.getContext('2d')
-      ctx.drawImage @image, 0, 0, targetWidth, targetHeight
-      @image.onload = =>
+      ctx.drawImage @, 0, 0, targetWidth, targetHeight
+      @onload = =>
         _options.success.call @, @image
-      @image.src = canvas.toDataURL()
+      @src = canvas.toDataURL()
       
     @each ->
       return false if @nodeName isnt "INPUT" or @attributes.getNamedItem('type').value.toLowerCase() isnt 'file'
