@@ -59,7 +59,7 @@
         ctx = canvas.getContext('2d');
         ctx.drawImage(this, 0, 0, targetWidth, targetHeight);
         this.onload = function() {
-          return _options.success.call(_this, _this.image);
+          return _options.success.call(_this, _this);
         };
         return this.src = canvas.toDataURL();
       };

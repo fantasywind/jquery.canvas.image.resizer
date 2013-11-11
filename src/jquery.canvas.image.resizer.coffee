@@ -50,7 +50,7 @@
       ctx = canvas.getContext('2d')
       ctx.drawImage @, 0, 0, targetWidth, targetHeight
       @onload = =>
-        _options.success.call @, @image
+        _options.success.call @, @
       @src = canvas.toDataURL()
       
     @each ->
